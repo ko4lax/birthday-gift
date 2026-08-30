@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 🎉</title>
+  <meta name="description" content="A little corner of the internet, made just for you." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>" />
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+
+  <!-- floating decorative stickers -->
+  <div class="sticker s-balloon" aria-hidden="true">🎈</div>
+  <div class="sticker s-star" aria-hidden="true">⭐</div>
+  <div class="sticker s-heart" aria-hidden="true">💕</div>
+  <div class="sticker s-candy" aria-hidden="true">🍭</div>
+  <div class="sticker s-sparkle" aria-hidden="true">✨</div>
+  <div class="sticker s-cloud" aria-hidden="true">☁️</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <p class="hero-kicker">it's your day</p>
+    <h1 class="hero-title" aria-label="Happy Birthday">
+      <span class="word">
+        <span>H</span><span>A</span><span>P</span><span>P</span><span>Y</span>
+      </span>
+      <span class="word">
+        <span>B</span><span>I</span><span>R</span><span>T</span><span>H</span><span>D</span><span>A</span><span>Y</span>
+      </span>
+    </h1>
+    <div class="name-badge">
+      <span class="name-text">My Love</span>
+      <span class="name-sparkle">✨</span>
+    </div>
+    <p class="hero-sub">sorry, the internet wasn't big enough for everything I wanted to say.<br />so I built you this little corner of it. 💗</p>
+    <a class="scroll-hint" href="#gallery">
+      <span>come see</span>
+      <span class="scroll-arrow">↓</span>
+    </a>
+  </header>
+
+  <!-- ============ GALLERY ============ -->
+  <section class="gallery" id="gallery">
+    <h2 class="section-title tilt-l">our little museum 📸</h2>
+    <p class="section-sub">some of my favorite frames of us</p>
+    <div class="polaroid-grid" id="polaroidGrid">
+      <!-- cards are filled by app.js from photos/photo-1.jpg ... photo-9.jpg -->
+    </div>
+  </section>
+
+  <!-- ============ LETTER ============ -->
+  <section class="letter-section" id="letter">
+    <h2 class="section-title tilt-r">one more thing ✉️</h2>
+    <p class="section-sub">this one's sealed. open it, silly.</p>
+
+    <div class="envelope-wrap" id="envelopeWrap">
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open the letter">
+        <div class="envelope-back"></div>
+        <div class="letter-mini">
+          <span>dear you,</span>
+          <span class="letter-mini-hint">(click to open)</span>
+        </div>
+        <div class="envelope-front"></div>
+        <div class="envelope-flap"></div>
+        <div class="wax-seal" aria-hidden="true">💗</div>
+      </div>
+    </div>
+
+    <article class="letter-full" id="letterFull" aria-hidden="true">
+      <div class="letter-paper">
+        <div class="letter-tape" aria-hidden="true"></div>
+        <p class="letter-greeting">dear <span class="letter-name">My Love</span>,</p>
+        <p>happy birthday. 🎂</p>
+        <p>I could have bought you something that fits in a box, but you deserve the whole internet, so here's this page instead. every pixel on it was placed while thinking about you (and yes, that includes the silly confetti).</p>
+        <p>thank you for the laughs, the patience, the way you make ordinary days feel like inside jokes. thank you for being you — loudly, softly, and everything in between.</p>
+        <p class="letter-wish">I wish you a year that feels like this page: warm, a little chaotic, and impossible not to smile at.</p>
+        <p class="letter-sign">with everything,<br /><span class="letter-sign-name">— yours 💗</span></p>
+      </div>
+      <button class="letter-close" id="letterClose">close &amp; replay confetti 🎊</button>
+    </article>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <p>made from scratch with 🤍 &amp; too much confetti</p>
+    <p class="footer-date">happy birthday, <span class="letter-name">My Love</span> 🎂</p>
+  </footer>
+
+  <!-- lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <img id="lightboxImg" src="" alt="memory, enlarged" />
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
