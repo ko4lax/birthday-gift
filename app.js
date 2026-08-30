@@ -4,42 +4,42 @@
 
   /* ============ gallery: build polaroids ============ */
   var CAPTIONS = [
-    "you, being cute",
-    "that one afternoon ☀️",
-    "snack squad 🍜",
-    "my favorite view",
-    "adventures 🛵",
-    "matching energy ⚡",
-    "the laugh I love",
-    "cozy era 🧸",
+    "the face I fell for",
+    "candlelight suits you 🕯️",
+    "my favorite person, my favorite light",
+    "could look at you forever",
+    "that smile ⚡",
+    "you, being you",
+    "softest soul 🌙",
+    "golden 🤍",
     "us. always us. 💗"
   ];
   var MAX_PHOTOS = 9;
 
   var grid = document.getElementById("polaroidGrid");
   var found = 0;
+  var EXTS = [".png", ".jpg", ".jpeg", ".webp"];
   for (var i = 1; i <= MAX_PHOTOS; i++) {
-    var probe = new Image();
-    /* eslint-disable no-loop-func */
-    (function (idx) {
-      probe.onload = function () {
-        buildCard(idx);
-      };
-      probe.onerror = function () {
-        /* photo not present — skip silently */
-      };
-      probe.src = "photos/photo-" + idx + ".jpg";
-    })(i);
+    tryExt(i, 0);
   }
 
-  function buildCard(idx) {
+  function tryExt(idx, extI) {
+    if (extI >= EXTS.length) return; /* photo not present — skip silently */
+    var src = "photos/photo-" + idx + EXTS[extI];
+    var probe = new Image();
+    probe.onload = function () { buildCard(idx, src); };
+    probe.onerror = function () { tryExt(idx, extI + 1); };
+    probe.src = src;
+  }
+
+  function buildCard(idx, src) {
     found++;
     var card = document.createElement("figure");
     card.className = "polaroid";
     card.style.setProperty("--i", found - 1);
 
     var img = document.createElement("img");
-    img.src = "photos/photo-" + idx + ".jpg";
+    img.src = src;
     img.alt = "memory " + idx;
     img.loading = "lazy";
 
@@ -121,7 +121,7 @@
   var canvas = document.getElementById("confetti");
   var ctx = canvas.getContext("2d");
   var pieces = [];
-  var colors = ["#ff8fb2", "#f56a97", "#c9b6ff", "#a8e6cf", "#ffe59d", "#ffc29e", "#b892ff"];
+  var colors = ["#e49c84", "#cc9c84", "#d9a866", "#8c3b3b", "#f2e8e2", "#c97a5e", "#6e2323"];
 
   function resize() {
     canvas.width = window.innerWidth;
