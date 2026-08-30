@@ -2,61 +2,46 @@
 (function () {
   "use strict";
 
-  /* ============ gallery: build polaroids ============ */
-  var CAPTIONS = [
-    "the face I fell for",
-    "candlelight suits you 🕯️",
-    "my favorite person, my favorite light",
-    "could look at you forever",
-    "that smile ⚡",
-    "you, being you",
-    "softest soul 🌙",
-    "golden 🤍",
-    "us. always us. 💗"
-  ];
-  var MAX_PHOTOS = 9;
-
-  var grid = document.getElementById("polaroidGrid");
-  var found = 0;
+  /* ============ photos inside the letter ============ */
+  var MAX_PHOTOS = 4;
   var EXTS = [".png", ".jpg", ".jpeg", ".webp"];
+  var SLOTS = Array.prototype.slice.call(document.querySelectorAll(".letter-photo"));
+
   for (var i = 1; i <= MAX_PHOTOS; i++) {
     tryExt(i, 0);
   }
 
   function tryExt(idx, extI) {
-    if (extI >= EXTS.length) return; /* photo not present — skip silently */
+    if (extI >= EXTS.length) return; /* photo not present — slot stays empty */
     var src = "photos/photo-" + idx + EXTS[extI];
     var probe = new Image();
-    probe.onload = function () { buildCard(idx, src); };
+    probe.onload = function () { fillSlot(idx, src); };
     probe.onerror = function () { tryExt(idx, extI + 1); };
     probe.src = src;
   }
 
-  function buildCard(idx, src) {
-    found++;
-    var card = document.createElement("figure");
-    card.className = "polaroid";
-    card.style.setProperty("--i", found - 1);
+  function fillSlot(idx, src) {
+    var slot = document.querySelector('.letter-photo[data-slot="' + idx + '"]');
+    if (!slot) return;
+
+    var wrap = document.createElement("figure");
+    wrap.className = "letter-photo-inner rot-" + ((idx % 3) + 1);
 
     var img = document.createElement("img");
     img.src = src;
-    img.alt = "memory " + idx;
+    img.alt = "photo " + idx;
     img.loading = "lazy";
 
-    var cap = document.createElement("figcaption");
-    cap.className = "polaroid-caption";
-    cap.textContent = CAPTIONS[(idx - 1) % CAPTIONS.length];
+    var tape = document.createElement("span");
+    tape.className = "photo-tape";
+    tape.setAttribute("aria-hidden", "true");
 
-    card.appendChild(img);
-    card.appendChild(cap);
-    card.addEventListener("click", function () {
-      openLightbox(img.src, cap.textContent);
-    });
-    grid.appendChild(card);
+    wrap.appendChild(tape);
+    wrap.appendChild(img);
+    slot.appendChild(wrap);
 
-    /* trigger entrance animation after append */
-    requestAnimationFrame(function () {
-      card.style.opacity = "";
+    img.addEventListener("click", function () {
+      openLightbox(src, "memory, enlarged");
     });
   }
 
