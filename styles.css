@@ -389,6 +389,7 @@ body {
 .letter-wish { font-weight: 600; color: var(--wine); }
 .letter-sign { text-align: right; margin-top: 1.6rem; }
 .letter-sign-name { font-family: var(--font-display); font-style: italic; font-size: 1.3rem; }
+.letter-ps { margin-top: 1rem; font-size: 0.85rem; color: #7a5f52; }
 
 .letter-close {
   display: block;
