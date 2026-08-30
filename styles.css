@@ -189,15 +189,16 @@ body {
   margin-bottom: 2.6rem;
 }
 
-/* ============ photos inside the letter — natural, varied placement ============ */
+/* ============ photos inside the letter — floats beside the text, like a real letter ============ */
 .letter-photo {
-  display: flex;
-  margin: 1.3rem 0;
+  margin: 0.3rem 0.2rem 0.5rem;
 }
-.letter-photo[data-slot="1"] { justify-content: flex-start; padding-left: 2%; }
-.letter-photo[data-slot="2"] { justify-content: flex-end; padding-right: 4%; }
-.letter-photo[data-slot="3"] { justify-content: center; }
-.letter-photo[data-slot="4"] { justify-content: flex-start; padding-left: 12%; }
+.letter-photo[data-slot="1"] { float: left; margin: 0.2rem 1rem 0.6rem -4px; }
+.letter-photo[data-slot="2"] { float: right; margin: 0.2rem -6px 0.6rem 1rem; }
+.letter-photo[data-slot="3"] { float: left; margin: 0.2rem 1rem 0.6rem 2%; }
+.letter-photo[data-slot="4"] { float: right; margin: 0.2rem 4% 0.6rem 1rem; }
+
+.letter-clear { clear: both; height: 0; }
 
 .letter-photo-inner {
   position: relative;
@@ -205,20 +206,13 @@ body {
   background: #fffdf9;
   border: 1px solid rgba(122, 88, 66, 0.2);
   box-shadow: 0 6px 16px rgba(122, 88, 66, 0.22);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
 }
 
-/* each slot gets its own size + tilt + vertical breathing room — no two look the same */
-.letter-photo[data-slot="1"] .letter-photo-inner { width: min(38%, 155px); transform: rotate(-4deg); margin-top: 4px; }
-.letter-photo[data-slot="2"] .letter-photo-inner { width: min(46%, 185px); transform: rotate(3deg); margin-top: -6px; }
-.letter-photo[data-slot="3"] .letter-photo-inner { width: min(34%, 138px); transform: rotate(-1.5deg); margin-bottom: 4px; }
-.letter-photo[data-slot="4"] .letter-photo-inner { width: min(42%, 168px); transform: rotate(2.5deg); }
-
-.letter-photo-inner:hover {
-  transform: rotate(0deg) scale(1.06) !important;
-  box-shadow: 0 10px 24px rgba(122, 88, 66, 0.3);
-  z-index: 3;
-}
+/* each slot gets its own size + tilt — no two look the same */
+.letter-photo[data-slot="1"] .letter-photo-inner { width: 128px; transform: rotate(-4deg); }
+.letter-photo[data-slot="2"] .letter-photo-inner { width: 148px; transform: rotate(3deg); }
+.letter-photo[data-slot="3"] .letter-photo-inner { width: 112px; transform: rotate(-1.5deg); }
+.letter-photo[data-slot="4"] .letter-photo-inner { width: 136px; transform: rotate(2.5deg); }
 
 .letter-photo-inner img {
   width: 100%;
@@ -226,7 +220,6 @@ body {
   object-fit: cover;
   border-radius: 2px;
   display: block;
-  cursor: zoom-in;
   background: transparent;
 }
 
@@ -255,10 +248,7 @@ body {
   box-shadow: 0 2px 4px rgba(122, 88, 66, 0.3);
 }
 
-.letter-paper p { margin-bottom: 0.6rem; }
-
-/* unfilled slots leave no gap */
-.letter-photo:empty { margin: 0; }
+.letter-paper p { margin-bottom: 0.6rem; text-align: justify; }
 
 /* ============ letter / envelope ============ */
 .letter-section {
@@ -378,6 +368,7 @@ body {
   position: relative;
   line-height: 32px;
   color: #3c2a22;
+  overflow: auto; /* contain floated photos so the card doesn't collapse */
 }
 
 .letter-tape {
@@ -434,29 +425,7 @@ body {
 }
 
 /* ============ lightbox ============ */
-.lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(74, 53, 44, 0.55);
-  backdrop-filter: blur(8px);
-  display: grid;
-  place-items: center;
-  z-index: 60;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.lightbox.open { opacity: 1; pointer-events: auto; }
-.lightbox img {
-  max-width: min(92vw, 900px);
-  max-height: 88vh;
-  border-radius: 10px;
-  border: 6px solid #fffdf9;
-  box-shadow: 0 30px 90px rgba(74, 53, 44, 0.45);
-  transform: scale(0.9);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.lightbox.open img { transform: scale(1); }
+.lightbox { display: none; }
 
 /* ============ mobile ============ */
 @media (max-width: 560px) {
@@ -468,12 +437,23 @@ body {
       repeating-linear-gradient(0deg, transparent 0 27px, rgba(204, 156, 132, 0.3) 27px 28px),
       #fdf8f2;
   }
-  /* natural placement, scaled for small screens — keep the offsets, shrink the sizes */
-  .letter-photo[data-slot="1"] .letter-photo-inner { width: 44%; }
-  .letter-photo[data-slot="2"] .letter-photo-inner { width: 50%; }
-  .letter-photo[data-slot="3"] .letter-photo-inner { width: 40%; }
-  .letter-photo[data-slot="4"] .letter-photo-inner { width: 46%; }
-  .letter-photo[data-slot="4"] { padding-left: 6%; }
+  /* floats create too-narrow text columns on small screens — stack instead */
+  .letter-photo,
+  .letter-photo[data-slot="1"],
+  .letter-photo[data-slot="2"],
+  .letter-photo[data-slot="3"],
+  .letter-photo[data-slot="4"] {
+    float: none;
+    display: flex;
+    justify-content: center;
+    margin: 0.7rem 0;
+  }
+  .letter-photo[data-slot="1"] .letter-photo-inner,
+  .letter-photo[data-slot="2"] .letter-photo-inner,
+  .letter-photo[data-slot="3"] .letter-photo-inner,
+  .letter-photo[data-slot="4"] .letter-photo-inner {
+    width: 46%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

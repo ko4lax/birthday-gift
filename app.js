@@ -39,30 +39,7 @@
     wrap.appendChild(tape);
     wrap.appendChild(img);
     slot.appendChild(wrap);
-
-    img.addEventListener("click", function () {
-      openLightbox(src, "memory, enlarged");
-    });
   }
-
-  /* ============ lightbox ============ */
-  var lightbox = document.getElementById("lightbox");
-  var lightboxImg = document.getElementById("lightboxImg");
-
-  function openLightbox(src, caption) {
-    lightboxImg.src = src;
-    lightboxImg.alt = caption || "memory, enlarged";
-    lightbox.classList.add("open");
-    lightbox.setAttribute("aria-hidden", "false");
-  }
-  function closeLightbox() {
-    lightbox.classList.remove("open");
-    lightbox.setAttribute("aria-hidden", "true");
-  }
-  lightbox.addEventListener("click", closeLightbox);
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeLightbox();
-  });
 
   /* ============ envelope / letter ============ */
   var envelope = document.getElementById("envelope");
