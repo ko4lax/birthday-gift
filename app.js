@@ -106,7 +106,7 @@
   var canvas = document.getElementById("confetti");
   var ctx = canvas.getContext("2d");
   var pieces = [];
-  var colors = ["#e49c84", "#cc9c84", "#d9a866", "#8c3b3b", "#f2e8e2", "#c97a5e", "#6e2323"];
+  var colors = ["#e49c84", "#cc9c84", "#d9a866", "#c97a5e", "#f2e8e2", "#b8863f", "#f0c9b4"];
 
   function resize() {
     canvas.width = window.innerWidth;
