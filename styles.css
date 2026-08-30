@@ -189,22 +189,25 @@ body {
   margin-bottom: 2.6rem;
 }
 
-/* ============ photos inside the letter ============ */
-.letter-photo { margin: 0.7rem 0; }
+/* ============ photos inside the letter (clean centered blocks) ============ */
+.letter-photo {
+  display: flex;
+  justify-content: center;
+  margin: 1.1rem 0;
+}
 
 .letter-photo-inner {
   position: relative;
-  width: min(36%, 150px);
-  margin: 0.3rem auto 0.2rem;
+  width: min(40%, 170px);
   padding: 6px;
   background: #fffdf9;
   border: 1px solid rgba(122, 88, 66, 0.2);
   box-shadow: 0 6px 16px rgba(122, 88, 66, 0.22);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
 }
-.letter-photo-inner.rot-1 { transform: rotate(-2.4deg); float: left; margin-left: 0.2rem; }
-.letter-photo-inner.rot-2 { transform: rotate(2deg);    float: right; margin-right: 0.2rem; }
-.letter-photo-inner.rot-3 { transform: rotate(-1deg);   float: right; margin-right: 0.6rem; }
+.letter-photo-inner.rot-1 { transform: rotate(-2.4deg); }
+.letter-photo-inner.rot-2 { transform: rotate(2deg); }
+.letter-photo-inner.rot-3 { transform: rotate(-1deg); }
 
 .letter-photo-inner:hover {
   transform: rotate(0deg) scale(1.06);
@@ -219,7 +222,7 @@ body {
   border-radius: 2px;
   display: block;
   cursor: zoom-in;
-  background: #e8d9cb;
+  background: transparent;
 }
 
 .photo-tape {
@@ -235,14 +238,7 @@ body {
   box-shadow: 0 2px 5px rgba(122, 88, 66, 0.18);
 }
 
-/* keep letter text wrapping around floated photos */
 .letter-paper p { margin-bottom: 0.6rem; }
-
-/* final photo centered above the signature */
-.letter-photo[data-slot="4"] .letter-photo-inner {
-  float: none;
-  margin: 0.5rem auto 0.3rem;
-}
 
 /* unfilled slots leave no gap */
 .letter-photo:empty { margin: 0; }
@@ -455,15 +451,12 @@ body {
       repeating-linear-gradient(0deg, transparent 0 27px, rgba(204, 156, 132, 0.3) 27px 28px),
       #fdf8f2;
   }
-  /* photos stack centered on small screens — no thin text slivers */
+  /* photos centered, sized for small screens */
   .letter-photo-inner,
   .letter-photo-inner.rot-1,
   .letter-photo-inner.rot-2,
-  .letter-photo-inner.rot-3,
-  .letter-photo[data-slot="4"] .letter-photo-inner {
-    float: none;
-    width: 52%;
-    margin: 0.6rem auto;
+  .letter-photo-inner.rot-3 {
+    width: 58%;
   }
 }
 
