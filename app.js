@@ -40,6 +40,51 @@
     slot.appendChild(wrap);
   }
 
+  /* ============ background music — starts the moment she opens the envelope ============ */
+  var bgm = document.getElementById("bgm");
+  var muteBtn = document.getElementById("muteBtn");
+  var musicStarted = false;
+
+  function startMusic() {
+    if (musicStarted || !bgm) return;
+    musicStarted = true;
+    bgm.volume = 0.35;
+    var p = bgm.play();
+    if (p && p.catch) {
+      p.catch(function () {
+        /* browser blocked it — she'll see the speaker icon, one tap starts it */
+        musicStarted = false;
+      });
+    }
+  }
+
+  if (muteBtn) {
+    muteBtn.addEventListener("click", function () {
+      if (!musicStarted) { startMusic(); muteBtn.textContent = "🔊"; return; }
+      bgm.muted = !bgm.muted;
+      muteBtn.textContent = bgm.muted ? "🔇" : "🔊";
+    });
+  }
+
+  /* ============ private "opened" flag — only Koala checks this ============ */
+  function markOpened() {
+    try {
+      if (!localStorage.getItem("bday_opened_at")) {
+        localStorage.setItem("bday_opened_at", new Date().toISOString());
+      }
+    } catch (e) { /* storage blocked — not critical */ }
+  }
+  /* view it: open this page with ?koala=1 in the address bar */
+  if (location.search.indexOf("koala=1") !== -1) {
+    try {
+      var seenAt = localStorage.getItem("bday_opened_at");
+      var tag = document.createElement("div");
+      tag.style.cssText = "position:fixed;bottom:8px;left:8px;background:#000;color:#fff;font:11px monospace;padding:6px 10px;border-radius:6px;z-index:999;opacity:0.85;";
+      tag.textContent = seenAt ? "opened: " + seenAt : "not opened yet";
+      document.body.appendChild(tag);
+    } catch (e) {}
+  }
+
   /* ============ envelope / letter ============ */
   var envelope = document.getElementById("envelope");
   var letterFull = document.getElementById("letterFull");
@@ -50,6 +95,8 @@
     if (envelope.classList.contains("open")) return;
     envelope.classList.add("open");
     opened = true;
+    startMusic();
+    markOpened();
     /* wait for flap + letter animation, then reveal letter */
     setTimeout(function () {
       letterFull.classList.add("visible");
@@ -77,6 +124,108 @@
       burst(120);
     }, 500);
   });
+
+  /* ============ memory game — 4 photo pairs ============ */
+  var gameBoard = document.getElementById("gameBoard");
+  var gameStatus = document.getElementById("gameStatus");
+
+  if (gameBoard) {
+    var pairsFound = 0;
+    var firstCard = null;
+    var lockBoard = false;
+
+    /* find which photos actually exist, then build pairs from them */
+    var gamePhotos = [];
+    var gameChecks = 0;
+    for (var g = 1; g <= MAX_PHOTOS; g++) {
+      probePhoto(g, 0);
+    }
+
+    function probePhoto(idx, extI) {
+      if (extI >= EXTS.length) {
+        gameChecks++;
+        if (gameChecks === MAX_PHOTOS) buildGame();
+        return;
+      }
+      var src = "photos/photo-" + idx + EXTS[extI];
+      var probe = new Image();
+      probe.onload = function () {
+        gamePhotos.push({ idx: idx, src: src });
+        gameChecks++;
+        if (gameChecks === MAX_PHOTOS) buildGame();
+      };
+      probe.onerror = function () { probePhoto(idx, extI + 1); };
+      probe.src = src;
+    }
+
+    function buildGame() {
+      if (!gamePhotos.length) { gameStatus.textContent = ""; return; }
+      var cards = [];
+      gamePhotos.forEach(function (p) {
+        cards.push(p); cards.push(p);
+      });
+      /* shuffle */
+      for (var s = cards.length - 1; s > 0; s--) {
+        var r = (Math.random() * (s + 1)) | 0;
+        var tmp = cards[s]; cards[s] = cards[r]; cards[r] = tmp;
+      }
+      cards.forEach(function (p) {
+        var card = document.createElement("button");
+        card.className = "game-card";
+        card.type = "button";
+        card.setAttribute("data-idx", p.idx);
+
+        var back = document.createElement("span");
+        back.className = "game-card-back";
+        back.textContent = "💗";
+
+        var face = document.createElement("span");
+        face.className = "game-card-face";
+        var fimg = document.createElement("img");
+        fimg.src = p.src;
+        fimg.alt = "memory card";
+        face.appendChild(fimg);
+
+        card.appendChild(back);
+        card.appendChild(face);
+
+        card.addEventListener("click", function () {
+          if (lockBoard) return;
+          if (card.classList.contains("flipped") || card.classList.contains("matched")) return;
+          card.classList.add("flipped");
+
+          if (!firstCard) {
+            firstCard = card;
+            return;
+          }
+
+          if (firstCard.getAttribute("data-idx") === card.getAttribute("data-idx")) {
+            firstCard.classList.add("matched");
+            card.classList.add("matched");
+            firstCard = null;
+            pairsFound++;
+            if (pairsFound === gamePhotos.length) {
+              gameStatus.textContent = "you found them all. told you it was rigged 💗";
+              burst(200);
+            } else {
+              gameStatus.textContent = pairsFound + " of " + gamePhotos.length + " found";
+            }
+          } else {
+            lockBoard = true;
+            var a = firstCard, b = card;
+            firstCard = null;
+            setTimeout(function () {
+              a.classList.remove("flipped");
+              b.classList.remove("flipped");
+              lockBoard = false;
+            }, 800);
+          }
+        });
+
+        gameBoard.appendChild(card);
+      });
+    }
+  }
 
   /* ============ confetti ============ */
   var canvas = document.getElementById("confetti");
