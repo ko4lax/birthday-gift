@@ -389,7 +389,6 @@ body {
 .letter-wish { font-weight: 600; color: var(--wine); }
 .letter-sign { text-align: right; margin-top: 1.6rem; }
 .letter-sign-name { font-family: var(--font-display); font-style: italic; font-size: 1.3rem; }
-.letter-ps { margin-top: 1rem; font-size: 0.85rem; color: #7a5f52; }
 
 .letter-close {
   display: block;
@@ -407,98 +406,6 @@ body {
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .letter-close:hover { transform: scale(1.06) rotate(-1deg); }
-
-/* ============ memory game ============ */
-.game-section {
-  padding: 2rem 1.5rem 5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-}
-
-.game-board {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(64px, 110px));
-  gap: 0.9rem;
-  justify-content: center;
-  width: 100%;
-  max-width: 32rem;
-}
-
-.game-card {
-  position: relative;
-  aspect-ratio: 3 / 4;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  perspective: 600px;
-}
-
-.game-card-back,
-.game-card-face {
-  position: absolute;
-  inset: 0;
-  border-radius: 10px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-  display: grid;
-  place-items: center;
-}
-
-.game-card-back {
-  background: linear-gradient(150deg, var(--peach) 0%, var(--peach-deep) 100%);
-  box-shadow: 0 6px 18px rgba(122, 88, 66, 0.28);
-  font-size: 1.7rem;
-}
-
-.game-card-face {
-  background: #fffdf9;
-  border: 1px solid rgba(122, 88, 66, 0.2);
-  transform: rotateY(180deg);
-  overflow: hidden;
-  box-shadow: 0 6px 18px rgba(122, 88, 66, 0.22);
-}
-
-.game-card-face img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 9px;
-  display: block;
-}
-
-.game-card.flipped .game-card-back,
-.game-card.matched .game-card-back { transform: rotateY(-180deg); }
-.game-card.flipped .game-card-face,
-.game-card.matched .game-card-face { transform: rotateY(0deg); }
-
-.game-card.matched {
-  cursor: default;
-  animation: match-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.game-card.matched .game-card-face {
-  box-shadow: 0 0 0 3px var(--gold), 0 6px 18px rgba(122, 88, 66, 0.22);
-}
-
-@keyframes match-pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
-
-.game-status {
-  margin-top: 1.2rem;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.1rem;
-  color: var(--ink-soft);
-  min-height: 1.6rem;
-  text-align: center;
-}
 
 /* mute button */
 .mute-btn {
@@ -572,12 +479,6 @@ body {
   .letter-photo[data-slot="4"] .letter-photo-inner {
     width: 46%;
   }
-  .game-board {
-    grid-template-columns: repeat(4, minmax(56px, 88px));
-    gap: 0.6rem;
-  }
-  .game-card-back { font-size: 1.3rem; }
-  .game-status { font-size: 0.95rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
