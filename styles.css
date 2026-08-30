@@ -189,28 +189,33 @@ body {
   margin-bottom: 2.6rem;
 }
 
-/* ============ photos inside the letter (clean centered blocks) ============ */
+/* ============ photos inside the letter — natural, varied placement ============ */
 .letter-photo {
   display: flex;
-  justify-content: center;
-  margin: 1.1rem 0;
+  margin: 1.3rem 0;
 }
+.letter-photo[data-slot="1"] { justify-content: flex-start; padding-left: 2%; }
+.letter-photo[data-slot="2"] { justify-content: flex-end; padding-right: 4%; }
+.letter-photo[data-slot="3"] { justify-content: center; }
+.letter-photo[data-slot="4"] { justify-content: flex-start; padding-left: 12%; }
 
 .letter-photo-inner {
   position: relative;
-  width: min(40%, 170px);
   padding: 6px;
   background: #fffdf9;
   border: 1px solid rgba(122, 88, 66, 0.2);
   box-shadow: 0 6px 16px rgba(122, 88, 66, 0.22);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
 }
-.letter-photo-inner.rot-1 { transform: rotate(-2.4deg); }
-.letter-photo-inner.rot-2 { transform: rotate(2deg); }
-.letter-photo-inner.rot-3 { transform: rotate(-1deg); }
+
+/* each slot gets its own size + tilt + vertical breathing room — no two look the same */
+.letter-photo[data-slot="1"] .letter-photo-inner { width: min(38%, 155px); transform: rotate(-4deg); margin-top: 4px; }
+.letter-photo[data-slot="2"] .letter-photo-inner { width: min(46%, 185px); transform: rotate(3deg); margin-top: -6px; }
+.letter-photo[data-slot="3"] .letter-photo-inner { width: min(34%, 138px); transform: rotate(-1.5deg); margin-bottom: 4px; }
+.letter-photo[data-slot="4"] .letter-photo-inner { width: min(42%, 168px); transform: rotate(2.5deg); }
 
 .letter-photo-inner:hover {
-  transform: rotate(0deg) scale(1.06);
+  transform: rotate(0deg) scale(1.06) !important;
   box-shadow: 0 10px 24px rgba(122, 88, 66, 0.3);
   z-index: 3;
 }
@@ -225,6 +230,7 @@ body {
   background: transparent;
 }
 
+/* two ways a photo gets "stuck" to the page — tape, or a pin */
 .photo-tape {
   position: absolute;
   top: -8px;
@@ -236,6 +242,17 @@ body {
   border-left: 2px dashed rgba(255, 255, 255, 0.55);
   border-right: 2px dashed rgba(255, 255, 255, 0.55);
   box-shadow: 0 2px 5px rgba(122, 88, 66, 0.18);
+}
+.letter-photo[data-slot="2"] .photo-tape,
+.letter-photo[data-slot="4"] .photo-tape {
+  width: 10px;
+  height: 10px;
+  left: 50%;
+  top: -5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e8b3a0, var(--wine));
+  border: none;
+  box-shadow: 0 2px 4px rgba(122, 88, 66, 0.3);
 }
 
 .letter-paper p { margin-bottom: 0.6rem; }
@@ -451,13 +468,12 @@ body {
       repeating-linear-gradient(0deg, transparent 0 27px, rgba(204, 156, 132, 0.3) 27px 28px),
       #fdf8f2;
   }
-  /* photos centered, sized for small screens */
-  .letter-photo-inner,
-  .letter-photo-inner.rot-1,
-  .letter-photo-inner.rot-2,
-  .letter-photo-inner.rot-3 {
-    width: 58%;
-  }
+  /* natural placement, scaled for small screens — keep the offsets, shrink the sizes */
+  .letter-photo[data-slot="1"] .letter-photo-inner { width: 44%; }
+  .letter-photo[data-slot="2"] .letter-photo-inner { width: 50%; }
+  .letter-photo[data-slot="3"] .letter-photo-inner { width: 40%; }
+  .letter-photo[data-slot="4"] .letter-photo-inner { width: 46%; }
+  .letter-photo[data-slot="4"] { padding-left: 6%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
