@@ -5,7 +5,6 @@
   /* ============ photos inside the letter ============ */
   var MAX_PHOTOS = 4;
   var EXTS = [".png", ".jpg", ".jpeg", ".webp"];
-  var SLOTS = Array.prototype.slice.call(document.querySelectorAll(".letter-photo"));
 
   for (var i = 1; i <= MAX_PHOTOS; i++) {
     tryExt(i, 0);
@@ -25,7 +24,7 @@
     if (!slot) return;
 
     var wrap = document.createElement("figure");
-    wrap.className = "letter-photo-inner rot-" + ((idx % 3) + 1);
+    wrap.className = "letter-photo-inner";
 
     var img = document.createElement("img");
     img.src = src;
